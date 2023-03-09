@@ -8,4 +8,10 @@ stages:
     outs:
       - data/interim/train_postproc.csv
 
-  # clean_data:
+  optimization:
+    cmd: python src/models/train_model.py data/interim/train_postproc.csv models/model.clf
+    deps:
+      - data/interim/train_postproc.csv
+      - src/models/train_model.py
+    outs:
+      - models/model.clf

@@ -7,9 +7,22 @@ stages:
       md5: 8cf8d6d39aecf7cc6466eb79b0ed6e1b
       size: 805421
     - path: src/data/make_dataset.py
-      md5: 7d0019133b1fe48b6149dbe6c926ff21
-      size: 3054
+      md5: 934aa546751bdc9334e3916209043a27
+      size: 3026
     outs:
     - path: data/interim/train_postproc.csv
       md5: d215c285c2f2929e6a6e733a8146b9f7
       size: 855130
+  optimization:
+    cmd: python src/models/train_model.py data/interim/train_postproc.csv models/model.clf
+    deps:
+    - path: data/interim/train_postproc.csv
+      md5: d215c285c2f2929e6a6e733a8146b9f7
+      size: 855130
+    - path: src/models/train_model.py
+      md5: df264bbe2a63620807f48cffa6e9e75e
+      size: 3265
+    outs:
+    - path: models/model.clf
+      md5: 4633d2bcfe648e13865353bbcc698544
+      size: 2172454

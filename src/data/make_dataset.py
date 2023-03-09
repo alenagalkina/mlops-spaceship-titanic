@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from pathlib import Path
-
 import click
 import numpy as np
 import pandas as pd
