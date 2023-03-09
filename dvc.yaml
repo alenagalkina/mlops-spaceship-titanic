@@ -1,0 +1,11 @@
+stages:
+
+  preprocessing:
+    cmd: python src/data/make_dataset.py data/raw/train.csv data/interim/train_postproc.csv
+    deps:
+      - data/raw/train.csv
+      - src/data/make_dataset.py
+    outs:
+      - data/interim/train_postproc.csv
+
+  # clean_data:

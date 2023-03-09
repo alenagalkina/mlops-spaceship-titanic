@@ -1,0 +1,15 @@
+schema: '2.0'
+stages:
+  preprocessing:
+    cmd: python src/data/make_dataset.py data/raw/train.csv data/interim/train_postproc.csv
+    deps:
+    - path: data/raw/train.csv
+      md5: 8cf8d6d39aecf7cc6466eb79b0ed6e1b
+      size: 805421
+    - path: src/data/make_dataset.py
+      md5: 7d0019133b1fe48b6149dbe6c926ff21
+      size: 3054
+    outs:
+    - path: data/interim/train_postproc.csv
+      md5: d215c285c2f2929e6a6e733a8146b9f7
+      size: 855130

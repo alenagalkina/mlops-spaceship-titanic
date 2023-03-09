@@ -1,31 +1,94 @@
 # -*- coding: utf-8 -*-
-import logging
 from pathlib import Path
 
 import click
-from dotenv import find_dotenv, load_dotenv
+import numpy as np
+import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
 
 
 @click.command()
 @click.argument("input_filepath", type=click.Path(exists=True))
 @click.argument("output_filepath", type=click.Path())
-def main(input_filepath, output_filepath):
-    """Runs data processing scripts to turn raw data from (../raw) into
-    cleaned data ready to be analyzed (saved in ../processed).
-    """
-    logger = logging.getLogger(__name__)
-    logger.info("making final data set from raw data")
+def preprocessing(input_filepath: str, output_filepath: str):
+
+    data = pd.read_csv(input_filepath)
+    luxury_amenities = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
+
+    data.loc[data.CryoSleep == True, luxury_amenities] = 0.0
+    data.loc[data.CryoSleep == False, luxury_amenities] = data.loc[
+        data.CryoSleep == False, luxury_amenities
+    ].fillna(data.loc[data.CryoSleep == False, luxury_amenities].median())
+    df = data.loc[data[luxury_amenities].isna().any(axis=1), luxury_amenities]
+    df[df.sum(axis=1) == 0] = df[df.sum(axis=1) == 0].fillna(0)
+    df[df.sum(axis=1) != 0] = df[df.sum(axis=1) != 0].fillna(
+        df[df.sum(axis=1) != 0].median()
+    )
+    data.loc[df.index, luxury_amenities] = df
+
+    data.loc[
+        (data[luxury_amenities].sum(axis=1) > 0) & (data.CryoSleep.isna()), "CryoSleep"
+    ] = False
+    data.loc[
+        (data[luxury_amenities].sum(axis=1) == 0) & (data.CryoSleep.isna()), "CryoSleep"
+    ] = True
+
+    data[["deck", "num", "side"]] = data.Cabin.str.split("/", expand=True)
+
+    data.loc[(data.HomePlanet == "Earth") & (data.VIP.isna()), "VIP"] = False
+
+    data[["group_num", "num_in_group"]] = data.PassengerId.str.split("_", expand=True)
+    data.HomePlanet = data.groupby(["group_num"], sort=False)["HomePlanet"].apply(
+        lambda x: x.ffill().bfill()
+    )
+
+    num_imputer = SimpleImputer(strategy="median")
+    cat_imputer = SimpleImputer(strategy="most_frequent")
+
+    cat_features = ["HomePlanet", "Destination", "deck", "side"]
+    bin_features = ["CryoSleep", "VIP"]
+
+    median_fill = ["Age"]
+    most_frequent_fill = ["VIP", "HomePlanet", "Destination", "deck", "side"]
+
+    data[median_fill] = pd.DataFrame(
+        num_imputer.fit_transform(data[median_fill]), columns=median_fill
+    )
+    data[most_frequent_fill] = pd.DataFrame(
+        cat_imputer.fit_transform(data[most_frequent_fill]), columns=most_frequent_fill
+    )
+
+    data[bin_features] = data[bin_features].astype(int)
+
+    encoder = OneHotEncoder(handle_unknown="ignore", sparse=False)
+    data = pd.concat(
+        [
+            data,
+            pd.DataFrame(
+                encoder.fit_transform(data[cat_features]),
+                columns=encoder.get_feature_names_out(),
+            ),
+        ],
+        axis=1,
+    )
+
+    data = data.drop(
+        cat_features
+        + [
+            "PassengerId",
+            "Cabin",
+            "Name",
+            "num",
+            "group_num",
+            "num_in_group",
+            "side_S",
+        ],
+        axis=1,
+    )
+
+    data.to_csv(output_filepath, index=False)
 
 
 if __name__ == "__main__":
-    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
-
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
-
-    main()
+    preprocessing()
