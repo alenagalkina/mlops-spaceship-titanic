@@ -20,9 +20,9 @@ stages:
       md5: d215c285c2f2929e6a6e733a8146b9f7
       size: 855130
     - path: src/models/train_model.py
-      md5: df264bbe2a63620807f48cffa6e9e75e
-      size: 3265
+      md5: 1173fd45100631835cb3becd2ba7b324
+      size: 3611
     outs:
     - path: models/model.clf
-      md5: 4633d2bcfe648e13865353bbcc698544
-      size: 2172454
+      md5: 2902eb09bf636114205d7df9b3282369
+      size: 4204692

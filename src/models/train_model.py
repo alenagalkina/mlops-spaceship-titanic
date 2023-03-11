@@ -15,7 +15,7 @@ from mlflow.models.signature import infer_signature
 
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment("optuna-integration")
+mlflow.set_experiment("optuna-integration-new")
 
 global train_x, valid_x, train_y, valid_y
 
@@ -45,19 +45,29 @@ def optuna_optimization(input_filepath: str, output_filepath: str):
     )
     study.optimize(objective, n_trials=10, callbacks=[mlflc])
 
-    best_params = study.best_params
-    model = catboost.CatBoostClassifier(**best_params)
-    model.fit(features_train, target_train)
+    mlflow.start_run()
 
+    best_params = study.best_params
+    model = catboost.CatBoostClassifier(**best_params, verbose=False)
+    model.fit(features_train, target_train)
     jb.dump(model, output_filepath)
 
-    signature = infer_signature(features_train, model.predict(features_train))
+    mlflow.log_params(best_params)
+    mlflow.log_metric("Accuracy", model.score(valid_x, valid_y))
+
+    signature = infer_signature(valid_x, model.predict(valid_x))
     mlflow.catboost.log_model(
         cb_model=model,
         artifact_path="model.clf",
-        registered_model_name="model_catb",
+        registered_model_name="model_catboost",
         signature=signature,
     )
+    mlflow.end_run()
+
+    df = mlflow.search_runs(filter_string="metrics.Accuracy > 0.8")
+    run_id = df.loc[df["metrics.Accuracy"].idxmin()]["run_id"]
+    print("df", df)
+    print("run_id", run_id)
 
 
 def objective(trial: optuna.Trial) -> float:
@@ -98,6 +108,7 @@ def objective(trial: optuna.Trial) -> float:
     pruning_callback.check_pruned()
 
     accuracy = gbm.score(valid_x, valid_y)
+
     return accuracy
 
 
