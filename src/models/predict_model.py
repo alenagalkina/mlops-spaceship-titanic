@@ -2,7 +2,8 @@
 import mlflow
 import numpy as np
 import pandas as pd
-import catboost
+
+# import catboost
 from sklearn.metrics import roc_auc_score
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
