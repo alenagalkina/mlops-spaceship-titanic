@@ -12,8 +12,8 @@ flavors:
     loader_module: mlflow.catboost
     python_version: 3.10.9
 mlflow_version: 1.27.0
-model_uuid: d4b9326356794f098285276650238d13
-run_id: 99b4eadacf024297a46b1881c49fd2b7
+model_uuid: b3a1f7405a104f7686709995127bb66b
+run_id: 10b4801dfb674028a0d2e18566e388df
 signature:
   inputs: '[{"name": "CryoSleep", "type": "long"}, {"name": "Age", "type": "double"},
     {"name": "VIP", "type": "long"}, {"name": "RoomService", "type": "double"}, {"name":
@@ -27,5 +27,5 @@ signature:
     {"name": "deck_E", "type": "double"}, {"name": "deck_F", "type": "double"}, {"name":
     "deck_G", "type": "double"}, {"name": "deck_T", "type": "double"}, {"name": "side_P",
     "type": "double"}]'
-  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
-utc_time_created: '2023-03-09 20:29:38.643446'
+  outputs: '[{"type": "integer"}]'
+utc_time_created: '2023-03-11 17:31:04.192965'
