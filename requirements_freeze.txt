@@ -130,7 +130,6 @@ smmap==5.0.0
 SQLAlchemy==1.4.46
 sqlparse==0.4.3
 sqltrie==0.1.1
--e git+ssh://git@gitlab.com/alenavgalkina/spaceship-titanic.git@eddc67c0337b383d84fd79368e5f0b1f93282dee#egg=src
 tabulate==0.9.0
 tenacity==8.2.2
 threadpoolctl==3.1.0
