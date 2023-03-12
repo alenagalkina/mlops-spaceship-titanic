@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import click
-import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
@@ -14,10 +13,10 @@ def preprocessing(input_filepath: str, output_filepath: str):
     data = pd.read_csv(input_filepath)
     luxury_amenities = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
 
-    data.loc[data.CryoSleep == True, luxury_amenities] = 0.0
-    data.loc[data.CryoSleep == False, luxury_amenities] = data.loc[
-        data.CryoSleep == False, luxury_amenities
-    ].fillna(data.loc[data.CryoSleep == False, luxury_amenities].median())
+    data.loc[data.CryoSleep is True, luxury_amenities] = 0.0
+    data.loc[data.CryoSleep is False, luxury_amenities] = data.loc[
+        data.CryoSleep is False, luxury_amenities
+    ].fillna(data.loc[data.CryoSleep is False, luxury_amenities].median())
     df = data.loc[data[luxury_amenities].isna().any(axis=1), luxury_amenities]
     df[df.sum(axis=1) == 0] = df[df.sum(axis=1) == 0].fillna(0)
     df[df.sum(axis=1) != 0] = df[df.sum(axis=1) != 0].fillna(
