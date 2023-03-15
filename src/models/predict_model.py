@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import click
 import mlflow
 import numpy as np
 import pandas as pd
@@ -9,14 +10,16 @@ from sklearn.metrics import roc_auc_score
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 
-def staging_model_prediction():
+@click.command()
+@click.argument("input_filepath", type=click.Path(exists=True))
+def predict_model(input_filepath: str):
     # Load model
     model_name = "catboost_model"
     stage = "Staging"
     model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{stage}")
 
     # Inference
-    data = pd.read_csv("data/interim/train_postproc.csv")
+    data = pd.read_csv(input_filepath)
     test = data.drop(["Transported"], axis=1)
     print(roc_auc_score(data.Transported.astype(int), np.rint(model.predict(test))))
 
@@ -48,6 +51,6 @@ def get_run_max_metric():
 
 
 if __name__ == "__main__":
-    staging_model_prediction()
+    predict_model()
     get_run_max_metric()
     # max_metric_model_prediction()

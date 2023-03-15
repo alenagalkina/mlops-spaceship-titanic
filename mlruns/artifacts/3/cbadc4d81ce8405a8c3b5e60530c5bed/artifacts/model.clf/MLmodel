@@ -1,0 +1,30 @@
+artifact_path: model.clf
+flavors:
+  lightgbm:
+    code: null
+    data: model.lgb
+    lgb_version: 3.3.5
+    model_class: lightgbm.basic.Booster
+  python_function:
+    data: model.lgb
+    env: conda.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.10.9
+mlflow_version: 1.27.0
+model_uuid: b0fcb2ff52fa4f32bcc6322f653f6f75
+run_id: cbadc4d81ce8405a8c3b5e60530c5bed
+signature:
+  inputs: '[{"name": "CryoSleep", "type": "long"}, {"name": "Age", "type": "double"},
+    {"name": "VIP", "type": "long"}, {"name": "RoomService", "type": "double"}, {"name":
+    "FoodCourt", "type": "double"}, {"name": "ShoppingMall", "type": "double"}, {"name":
+    "Spa", "type": "double"}, {"name": "VRDeck", "type": "double"}, {"name": "HomePlanet_Earth",
+    "type": "double"}, {"name": "HomePlanet_Europa", "type": "double"}, {"name": "HomePlanet_Mars",
+    "type": "double"}, {"name": "Destination_55 Cancri e", "type": "double"}, {"name":
+    "Destination_PSO J318.5-22", "type": "double"}, {"name": "Destination_TRAPPIST-1e",
+    "type": "double"}, {"name": "deck_A", "type": "double"}, {"name": "deck_B", "type":
+    "double"}, {"name": "deck_C", "type": "double"}, {"name": "deck_D", "type": "double"},
+    {"name": "deck_E", "type": "double"}, {"name": "deck_F", "type": "double"}, {"name":
+    "deck_G", "type": "double"}, {"name": "deck_T", "type": "double"}, {"name": "side_P",
+    "type": "double"}]'
+  outputs: '[{"type": "integer"}]'
+utc_time_created: '2023-03-15 20:24:30.445955'

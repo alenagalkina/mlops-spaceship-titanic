@@ -1,0 +1,6 @@
+mlflow
+catboost==1.1.1
+ipywidgets==8.0.4
+scikit-learn==1.2.2
+typing-extensions==4.5.0
+xgboost==1.7.4
