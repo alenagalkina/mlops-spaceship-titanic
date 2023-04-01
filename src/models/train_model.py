@@ -27,7 +27,7 @@ global train_x, valid_x, train_y, valid_y
 @click.command()
 @click.argument("input_filepath", type=click.Path(exists=True))
 @click.argument("output_filepath", type=click.Path())
-def optuna_optimization(input_filepath: str, output_filepath: str):
+def train_model(input_filepath: str, output_filepath: str):
     global train_x, valid_x, train_y, valid_y
 
     train_preproc = pd.read_csv(input_filepath)
@@ -310,4 +310,4 @@ def objective_lgb(trial: optuna.Trial) -> float:
 
 
 if __name__ == "__main__":
-    optuna_optimization()
+    train_model()

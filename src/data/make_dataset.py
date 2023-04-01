@@ -8,7 +8,7 @@ from sklearn.preprocessing import OneHotEncoder
 @click.command()
 @click.argument("input_filepath", type=click.Path(exists=True))
 @click.argument("output_filepath", type=click.Path())
-def preprocessing(input_filepath: str, output_filepath: str):
+def make_dataset(input_filepath: str, output_filepath: str):
 
     data = pd.read_csv(input_filepath)
     luxury_amenities = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
@@ -88,4 +88,4 @@ def preprocessing(input_filepath: str, output_filepath: str):
 
 
 if __name__ == "__main__":
-    preprocessing()
+    make_dataset()

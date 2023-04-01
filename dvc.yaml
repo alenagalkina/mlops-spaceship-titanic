@@ -15,3 +15,9 @@ stages:
       - src/models/train_model.py
     outs:
       - models/model.clf
+
+  inference:
+    cmd: python src/models/predict_model.py data/interim/train_postproc.csv
+    deps:
+      - src/models/predict_model.py
+      - data/interim/train_postproc.csv
