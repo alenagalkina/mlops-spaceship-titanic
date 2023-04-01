@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 import catboost as cb
 import click
 import joblib as jb
@@ -8,6 +10,7 @@ import numpy as np
 import optuna
 import pandas as pd
 import xgboost as xgb
+from dotenv import load_dotenv
 from mlflow.models.signature import infer_signature
 
 # from optuna.integration import (
@@ -19,7 +22,10 @@ from optuna.integration.mlflow import MLflowCallback
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+load_dotenv()
+remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
+mlflow.set_tracking_uri(remote_server_uri)
+# mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 global train_x, valid_x, train_y, valid_y
 
@@ -73,7 +79,7 @@ def train_model(input_filepath: str, output_filepath: str):
 
         mlflow.catboost.log_model(
             cb_model=model,
-            artifact_path="model.clf",
+            artifact_path="model",
             registered_model_name="catboost_model",
             signature=signature,
         )
@@ -114,7 +120,7 @@ def train_model(input_filepath: str, output_filepath: str):
 
         mlflow.xgboost.log_model(
             xgb_model=model,
-            artifact_path="model.clf",
+            artifact_path="model",
             registered_model_name="xgboost_model",
             signature=signature,
         )
@@ -156,7 +162,7 @@ def train_model(input_filepath: str, output_filepath: str):
 
         mlflow.lightgbm.log_model(
             lgb_model=model,
-            artifact_path="model.clf",
+            artifact_path="model",
             registered_model_name="lgboost_model",
             signature=signature,
         )
