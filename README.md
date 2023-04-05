@@ -1,7 +1,54 @@
-spaceship_titanic
+Spaceship Titanic
 ==============================
 
-A short description of the project.
+## Description
+Репозиторий демонстрирует реализацию проекта "MLOps на примере задачи Spaceship Titanic"
+
+Исходные данные:
+https://www.kaggle.com/competitions/spaceship-titanic
+
+
+## Основные шаги:
+1. Реализован baseline в рамках соревнования на Kaggle
+2. Создан локальный репозиторий с структурой проекта cookiecutter data science template
+3. Создана виртуальная среда (env) и установлены необходимые для проекта зависимости
+4. Добавлены стилистический линтер (flake8) и авто-форматеры (black+isort)
+5. Настроен .gitignore
+6. Создан удаленный репозиторий (GitLab), синхронизирован с локальным по SSH
+7. Удаленный репозиторий настроен под github-flow
+8. Исходный код организован по модулям
+9. CLI (click)
+10. Создан CI-пайплайн (black+flake8)
+11. Реализованы тесты (pytest, great_expectations) и добавлены в CI-пайплайн
+12. Установлен и сконфигурирован DVC
+13. Настроен пайплайн запуска модулей с помощью DVC (dvc.yaml, dvc repro)
+14. Реализован подбор гиперпараметров моделей с помощью Optuna для моделей xgboost, catboost и lightgbm
+15. Интегрированы Optuna и MLFlow для трекинга экспериментов
+16. Настроены в MLflow логирование параметров, метрик и моделей (по сценарию 3)
+17. Развернут MLflow по сценарию 4: СУБД (PostgreSQL) + хранилище артифактов (MinIO) в Docker-контейнерах
+18. Проведены эксперименты с логированием модели
+19. Реализован получение Staging-модели из MLFlow models и прогноз на тестовых данных
+20. Модель запущена как сервис в Docker-контейнере
+
+## Tехнологический стек проекта:
+- Python 3.10
+- Зависимости: `pip` + `env` / `poetry`
+- CLI: `click`
+- Шаблон проекта: `cookiecutter`
+- Версионирование кода: `GitLab` / `GitHub`
+- Версионирование данных: `dvc` + `minio`
+- Workflow менеджер: `dvc`
+- Контроль codestyle:
+	- Линтеры: `pylint`, `flake8`
+	- Форматтеры: `black`, `isort`
+- Трекинг экспериментов: `mlflow` (Scenario 4: DB PostgreSQL + S3 minio)
+- ML: `xgboost`, `catboost`, `lightgbm`
+- Оптимизация гиперпараметров: `optuna`
+- Тестирование: `pytest`, `great_expectations`
+- API: `FastAPI` + `Uvicorn`
+- CI/CD: `gitlab CI` + `Docker` + `nexus`
+
+
 
 Project Organization
 ------------
